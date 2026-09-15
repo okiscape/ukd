@@ -1,0 +1,60 @@
+title-text: ""
+desktop-image: "assets/background.png"
+desktop-color: "#000000"
+terminal-font: "Terminus Regular 14"
+terminal-left: "0"
+terminal-top: "0"
+terminal-width: "100%"
+terminal-height: "100%"
+terminal-border: "0"
+
++ image {
+	left = 325
+	top = 297
+	width = 635
+	height = 476
+	file = "assets/banner.png"
+}
+
++ label {
+	left = 1152
+	top = 375
+	align = "left"
+	text = "Choose an OS"
+	color = "#FFFFFF"
+	font = "Ubuntu Bold 20"
+}
+
++ boot_menu {
+    left = 1152
+    top = 443
+    width = 385
+    height = 200
+    item_font = "Ubuntu Regular 17"
+    item_color = "#2b2b2b"
+    selected_item_color = "#FFFFFF"
+    icon_width = 30
+    icon_height = 30
+    item_icon_space = 8
+    item_height = 40
+    item_padding = 0
+    item_spacing = 6
+}
+
++ image {
+	left = 1152
+	top = 676
+	width = 349
+	height = 30
+	file = "assets/keys.png"
+}
+
++ label {
+    left = 1152
+    top = 787
+    align = "left"
+    id = "__timeout__"
+    text = "Booting in %d seconds..."
+    color = "#CCCCCC"
+    font = "Ubuntu Regular 17"
+}

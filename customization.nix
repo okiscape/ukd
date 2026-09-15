@@ -1,0 +1,5 @@
+{
+  imports = [
+    ./custom/packages.nix
+  ];
+}

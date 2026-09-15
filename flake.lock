@@ -1,0 +1,111 @@
+{
+  "nodes": {
+    "driftwm": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1789395932,
+        "narHash": "sha256-c/FGLGvP/7M+n41j85IA5OzqKBzzQ532eT7r61HCJJs=",
+        "owner": "malbiruk",
+        "repo": "driftwm",
+        "rev": "e1d72ed4c21ef55d65135eb817d2eabb7780ed46",
+        "type": "github"
+      },
+      "original": {
+        "owner": "malbiruk",
+        "repo": "driftwm",
+        "type": "github"
+      }
+    },
+    "home-manager": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1789430117,
+        "narHash": "sha256-t+U1mijItLJ64xZOifpfQ17kpAL73nU7pDI48ScacVc=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "cda90fd8838825c689fde9d3f3b4e937937790df",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "konawalls": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1789353326,
+        "narHash": "sha256-NE7A/KzGqTOVT+CJm3WE8JOJeAXUnGc4KkuZQ/S16UE=",
+        "owner": "okiscape",
+        "repo": "konawalls",
+        "rev": "10f738c0e62c1e7650cccbe2ebb016f672665668",
+        "type": "github"
+      },
+      "original": {
+        "owner": "okiscape",
+        "repo": "konawalls",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1789286504,
+        "narHash": "sha256-eiEK7cKZORNEvX0GeF3RtNEF/JXhgf2RqSp3230q13E=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "ef34387ddd751e1ab8857adf4676492d32eb24ec",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "driftwm": "driftwm",
+        "home-manager": "home-manager",
+        "konawalls": "konawalls",
+        "nixpkgs": "nixpkgs",
+        "zen-browser": "zen-browser"
+      }
+    },
+    "zen-browser": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1789289402,
+        "narHash": "sha256-7HHAIxdoDAJv09/I6DrMsAJFgol2cqJumaPCCZ+XdAU=",
+        "owner": "youwen5",
+        "repo": "zen-browser-flake",
+        "rev": "4036109214cf20632000558935bd823b901fa886",
+        "type": "github"
+      },
+      "original": {
+        "owner": "youwen5",
+        "repo": "zen-browser-flake",
+        "type": "github"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}

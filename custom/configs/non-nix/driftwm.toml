@@ -1,0 +1,61 @@
+autostart = [
+  "awww-daemon",
+  "vicinae server",
+  # "qs"
+  "wl-paste --type text --watch cliphist store",
+  "wl-paste --type image --watch cliphist store"
+]
+window_placement = "cursor"
+focus_follows_mouse = true
+
+[env]
+QT_WAYLAND_DISABLE_WINDOWDECORATION = "1"
+
+[decorations]
+default_mode = "none"
+corner_radius = 0
+
+[input.keyboard]
+layout = "us,ru"
+options = "grp:alt_shift_toggle"
+
+[input.trackpad]
+accel_profile = "flat"
+click_method = "none"
+
+[background]
+type = "none"
+
+[keybindings]
+"mod+c" = "exec hyprpicker | wl-copy"
+"mod" = "exec vicinae toggle"
+"mod+d" = "exec echo"
+"mod+s" = "exec handy --toggle-transcription"
+"mod+v" = "exec vicinae vicinae://launch/clipboard/history"
+"mod+e" = "exec dolphin"
+"mod+t" = "exec kitty"
+
+"shift+print" = "spawn grim -g \"$(slurp -d)\" - | wl-copy"
+
+[zoom]
+reset_on_new_window = false
+
+[gestures.on-window]
+"alt+3-finger-swipe" = "move-window"
+"mod+alt+3-finger-swipe" = "resize-window"
+
+
+[[window_rules]]
+app_id = "*"
+opacity = 1
+decoration = "none"
+
+[[window_rules]]
+app_id = "kitty"
+opacity = 0.85
+blur = true
+
+[[window_rules]]
+title            = "Picture-in-Picture"
+pinned_to_screen = true
+position         = [0, -300]
