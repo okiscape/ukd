@@ -11,7 +11,7 @@
       efiSupport = true;
       useOSProber = true;
 
-      theme = ./custom/configs/non-nix/grub-theme;
+      theme = ../../common/grub-theme;
     };
 
     efi.canTouchEfiVariables = true;

@@ -10,6 +10,7 @@
     pkgs.betterdiscord-installer pkgs.steam pkgs.cavalier pkgs.cava
     pkgs.minesweep-rs pkgs.cowsay pkgs.librepods pkgs.libreoffice
     pkgs.kew inputs.konawalls.packages.${pkgs.stdenv.hostPlatform.system}.default
+    pkgs.figlet
 
     # code
     pkgs.neovim pkgs.zed-editor pkgs.wakatime-cli  pkgs.opencode

@@ -4,7 +4,7 @@
 
     settings = {
       logo = {
-        source = ./non-nix/fastfetch-logo.png;
+        source = ../../../../common/fastfetch-logo.png;
         height = 12;
         width = 36;
         padding = {

@@ -1,6 +1,6 @@
 {
   programs.fish = {
     enable = true;
-    shellInit = "source ${../scripts/fish_init.sh}";
+    shellInit = "source ${../../../../common/fish_init.sh}";
   };
 }
