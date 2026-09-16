@@ -17,5 +17,5 @@ if confirm "\"nixos-rebuild switch\" now?"; then
     echo " - - - - - - - "
 
 else
-    echo "ok"
+    echo " ! ok, bye"
 fi

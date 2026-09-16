@@ -51,7 +51,7 @@ case "$DISTRO" in
         ;;
 
     ubuntu|debian)
-        if confirm "does this machine needs gui?"; then
+        if confirm " ? does this machine needs gui?"; then
             PROFILE="server"
         else
             PROFILE="desktop"
@@ -64,7 +64,7 @@ case "$DISTRO" in
         ;;
 
     *)
-        echo "this dots doesnt know '$DISTRO' yet" >&2
+        echo " ! this dots doesnt know '$DISTRO' yet" >&2
         exit 1
         ;;
 esac
