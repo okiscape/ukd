@@ -46,12 +46,7 @@ echo "> distro detected: $DISTRO" >&2
 
 case "$DISTRO" in
     nixos)
-        cd "$REPO_DIR/hosts/nixos-desktop"
-        if confirm "\"nixos-rebuild switch\" now?"; then
-            sudo nixos-rebuild switch --flake ".#${HOSTNAME}"
-        else
-            echo "ok"
-        fi
+        sh "$REPO_DIR/scripts/nix/install.sh"
         ;;
 
     ubuntu|debian)
