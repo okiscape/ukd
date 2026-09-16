@@ -1,11 +1,22 @@
 #!/usr/bin/env sh
 set -eu
 
+echo '
+            88                88
+            88                88
+            88                88
+88       88 88   ,d8  ,adPPYb,88
+88       88 88 ,a8"  a8"    `Y88
+88       88 8888[    8b       88
+"8a,   ,a88 88`"Yba, "8a,   ,d88
+ `"YbbdP'"'"'Y8 88   `Y8a `"8bbdP"Y8
+~ unified   okiscape     dots  ~
+'
+
 REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 detect_distro() {
     if [ -f /etc/os-release ]; then
-        # shellcheck disable=SC1091
         . /etc/os-release
         echo "$ID"
     else
@@ -14,7 +25,6 @@ detect_distro() {
 }
 
 ask() {
-    # ask "вопрос" "default"
     prompt="$1"
     default="${2:-}"
     printf '%s [%s]: ' "$prompt" "$default" >&2
@@ -23,33 +33,29 @@ ask() {
 }
 
 confirm() {
-    printf '%s [y/N]: ' "$1" >&2
+    printf '%s [Y/n]: ' "$1" >&2
     read -r answer
     case "$answer" in
-        y|Y|yes) return 0 ;;
-        *) return 1 ;;
+        n|N|no) return 1 ;;
+        *) return 0 ;;
     esac
 }
 
 DISTRO=$(detect_distro)
-echo "Обнаружен дистрибутив: $DISTRO" >&2
+echo "> distro detected: $DISTRO" >&2
 
 case "$DISTRO" in
     nixos)
-        echo "== NixOS =="
-        HOST=$(ask "Имя хоста (flake output)" "$(hostname)")
         cd "$REPO_DIR/hosts/nixos-desktop"
-        if confirm "Пересобрать систему сейчас (nixos-rebuild switch)?"; then
-            sudo nixos-rebuild switch --flake ".#${HOST}"
+        if confirm "\"nixos-rebuild switch\" now?"; then
+            sudo nixos-rebuild switch --flake ".#${HOSTNAME}"
         else
-            echo "Ок, конфиг лежит в hosts/nixos-desktop, собери вручную:"
-            echo "  sudo nixos-rebuild switch --flake .#${HOST}"
+            echo "ok"
         fi
         ;;
 
     ubuntu|debian)
-        echo "== Ubuntu/Debian =="
-        if confirm "Это сервер (без GUI)?"; then
+        if confirm "does this machine needs gui?"; then
             PROFILE="server"
         else
             PROFILE="desktop"
@@ -58,14 +64,13 @@ case "$DISTRO" in
         ;;
 
     arch)
-        echo "== Arch Linux =="
         sh "$REPO_DIR/scripts/install-arch.sh"
         ;;
 
     *)
-        echo "Дистрибутив '$DISTRO' не поддерживается" >&2
+        echo "this dots doesnt know '$DISTRO' yet" >&2
         exit 1
         ;;
 esac
 
-echo "Готово."
+echo "All done"
