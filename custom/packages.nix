@@ -7,10 +7,10 @@
   ];
 
   nixpkgs.config.allowUnfree = true;
-
   programs.uwsm.enable = true;
-
   security.polkit.enable = true;
+  networking.firewall.checkReversePath = "loose";
+  networking.firewall.allowedUDPPorts = [  ];
 
   environment.systemPackages = [
     # base
@@ -18,7 +18,7 @@
     pkgs.nil pkgs.package-version-server pkgs.btop
     pkgs.flatpak pkgs.gnumake pkgs.musl pkgs.gcc
     pkgs.btrfs-progs pkgs.efibootmgr pkgs.refind
-    pkgs.os-prober
+    pkgs.os-prober pkgs.pipewire
 
     # wm
     inputs.driftwm.packages.${pkgs.stdenv.hostPlatform.system}.default
