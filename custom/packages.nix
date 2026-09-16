@@ -4,6 +4,7 @@
   imports = [
     ./configs/throne.nix
     ./configs/wireshark.nix
+    ./configs/pipewire.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
