@@ -42,7 +42,8 @@ confirm() {
 }
 
 DISTRO=$(detect_distro)
-echo "> distro detected: $DISTRO" >&2
+echo " > distro detected: $DISTRO" >&2
+echo
 
 case "$DISTRO" in
     nixos)
@@ -68,4 +69,4 @@ case "$DISTRO" in
         ;;
 esac
 
-echo "All done"
+echo " ! All done"

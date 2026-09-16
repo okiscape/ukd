@@ -9,7 +9,7 @@ confirm() {
         *)   hint="y/N" ;;
     esac
 
-    printf '%s [%s]: ' "$prompt" "$hint" >&2
+    printf ' ? %s [%s]: ' "$prompt" "$hint" >&2
     read -r answer
     answer="${answer:-$default}"
 

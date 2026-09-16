@@ -1,4 +1,4 @@
-echo "## scripts/nix/install.sh starting..."
+echo " # scripts/nix/install.sh starting..."
 
 CUR_DIR="$(cd "$(dirname "$0")" && pwd)"
 LIB_DIR="$(cd "$CUR_DIR/../lib" && pwd)"
