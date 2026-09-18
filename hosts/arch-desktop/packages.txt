@@ -1,0 +1,98 @@
+# arch-desktop packages
+# one package per line, "#" starts a comment
+# installed with: sudo pacman -S --needed <packages>
+# see aur.txt for AUR packages (installed with yay)
+
+# base
+git
+curl
+vim
+tmux
+btop
+flatpak
+make
+musl
+gcc
+btrfs-progs
+efibootmgr
+refind
+os-prober
+pipewire
+
+# wm
+lightdm
+slurp
+
+# clipboard / wm helpers
+wl-clipboard
+cliphist
+hyprpicker
+grim
+
+# bluetooth
+bluez
+blueman
+
+# entertainment
+discord
+steam
+cava
+cowsay
+libreoffice
+figlet
+
+# code
+neovim
+rustup
+go
+docker
+pnpm
+python
+protobuf
+cmake
+docker-compose
+jq
+android-tools
+
+# reverse eng
+nmap
+minicom
+openocd
+flashrom
+binwalk
+file
+usbutils
+i2c-tools
+wireshark-qt
+aircrack-ng
+bluez-tools
+avahi
+arp-scan
+
+# data
+nicotine-plus
+qbittorrent
+filelight
+dolphin
+gparted
+yazi
+ffmpeg
+yt-dlp
+mpv
+sqlite
+postgresql
+duf
+
+# art
+kdenlive
+opentabletdriver
+krita
+ardour
+obs-studio
+
+# term
+fish
+kitty
+starship
+fastfetch
+gammastep
