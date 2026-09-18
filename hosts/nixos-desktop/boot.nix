@@ -12,6 +12,8 @@
       useOSProber = true;
 
       theme = ../../common/grub-theme;
+
+      splashImage = null;
     };
 
     efi.canTouchEfiVariables = true;
