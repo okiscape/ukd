@@ -24,43 +24,54 @@ detect_distro() {
     fi
 }
 
-ask() {
-    prompt="$1"
-    default="${2:-}"
-    printf '%s [%s]: ' "$prompt" "$default" >&2
-    read -r answer
-    echo "${answer:-$default}"
-}
-
-confirm() {
-    printf '%s [Y/n]: ' "$1" >&2
-    read -r answer
-    case "$answer" in
-        n|N|no) return 1 ;;
-        *) return 0 ;;
-    esac
-}
+. "$REPO_DIR/scripts/lib/ask.sh"
+. "$REPO_DIR/scripts/lib/confirm.sh"
+. "$REPO_DIR/scripts/lib/menu.sh"
 
 DISTRO=$(detect_distro)
 echo " > distro detected: $DISTRO" >&2
-echo
+
+if [ "$(id -u)" == 0 ]; then
+  echo " ! root perms detected"
+fi
+
+if [ "$DISTRO" = "nixos" ]; then
+    STAGE=$(menu "select stage:" \
+        "install configuration")
+else
+    STAGE=$(menu "select stage:" \
+        "install configuration"\
+        "full system installation")
+fi
+
+echo " > stage: $STAGE" >&2
 
 case "$DISTRO" in
     nixos)
-        sh "$REPO_DIR/scripts/nix/install.sh"
+        cd "$REPO_DIR/hosts/nixos-desktop"
+        sh "./install.sh"
         ;;
 
     ubuntu|debian)
-        if confirm " ? does this machine needs gui?"; then
-            PROFILE="server"
-        else
-            PROFILE="desktop"
-        fi
-        sh "$REPO_DIR/scripts/install-debian.sh" "$PROFILE"
+        case "$STAGE" in
+            "full system installation")
+                sh "$REPO_DIR/hosts/ubuntu-server/root.sh"
+                ;;
+            "install configuration")
+                sh "$REPO_DIR/hosts/ubuntu-server/install.sh"
+                ;;
+        esac
         ;;
 
     arch)
-        sh "$REPO_DIR/scripts/install-arch.sh"
+        case "$STAGE" in
+            "full system installation")
+                sh "$REPO_DIR/hosts/arch-desktop/root.sh"
+                ;;
+            "install configuration")
+                sh "$REPO_DIR/hosts/arch-desktop/install.sh"
+                ;;
+        esac
         ;;
 
     *)
