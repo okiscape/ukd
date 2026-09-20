@@ -37,6 +37,7 @@
       "audio"
       "input"
       "wireshark"
+      "wallpapers"
     ];
     shell = pkgs.bash;
     packages = with pkgs; [

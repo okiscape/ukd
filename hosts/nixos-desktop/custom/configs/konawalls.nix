@@ -5,8 +5,8 @@
     package = inputs.konawalls.packages.${pkgs.stdenv.hostPlatform.system}.default;
     settings = {
       tags = ["blue_archive" "s"];
-      savePath = "/home/okiscape/.config/konawalls/wallpaper.img";
-      executeAfter = "awww img /home/okiscape/.config/konawalls/wallpaper.img";
+      savePath = "/var/lib/wallpapers/wallpaper.png";
+      executeAfter = "awww img /var/lib/wallpapers/wallpaper.png";
     };
   };
 }

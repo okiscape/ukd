@@ -5,6 +5,7 @@
     ./configs/throne.nix
     ./configs/wireshark.nix
     ./configs/pipewire.nix
+    ./configs/konawalls.sys.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
