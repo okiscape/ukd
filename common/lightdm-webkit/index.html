@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>greeter</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <div class="bg-blur"></div>
+  <div class="bg-overlay"></div>
+
+  <div class="center-column">
+    <div class="clock-block">
+      <div id="clock">00:00:00</div>
+      <div id="date">january 1, 1970</div>
+    </div>
+
+    <form id="login-form" autocomplete="off">
+      <input type="text" id="username-input" placeholder="username" autofocus>
+    </form>
+
+    <div id="auth-zone" style="display:none">
+      <input type="password" id="password-input" placeholder="password">
+
+      <div class="auth-hint">esc - back</div>
+    </div>
+
+    <div id="message"></div>
+  </div>
+
+  <div class="bottom-bar">
+    <button id="shutdown-btn">⏻</button>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>
