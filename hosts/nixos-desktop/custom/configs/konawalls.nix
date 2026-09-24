@@ -6,7 +6,7 @@
     settings = {
       tags = ["blue_archive" "s"];
       savePath = "/var/lib/wallpapers/wallpaper.png";
-      executeAfter = "awww img /var/lib/wallpapers/wallpaper.png";
+      executeAfter = "awww img /var/lib/wallpapers/wallpaper.png && hellwal --image /var/lib/wallpapers/wallpaper.png --check-contrast";
     };
   };
 }

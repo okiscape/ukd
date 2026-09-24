@@ -98,6 +98,9 @@
           key = "board";
           format = "{vendor} {name}";
         }
+        {
+          type = "colors";
+        }
       ];
     };
   };

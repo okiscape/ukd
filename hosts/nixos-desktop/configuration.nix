@@ -21,7 +21,6 @@
   networking.hostName = "atom-nixos";
 
   networking.networkmanager.enable = true;
-  networking.enableIPv6 = false;
 
   time.timeZone = "Europe/Moscow";
 
