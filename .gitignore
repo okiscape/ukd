@@ -1,2 +1,5 @@
 hardware-configuration.nix
 *.bak
+.*
+!.gitignore
+!.github
