@@ -50,7 +50,6 @@
     ./configs/starship.nix
     ./configs/fish.nix
     ./configs/fastfetch.nix
-    ./configs/konawalls.nix
     ./configs/hellwal.nix
   ];
 }

@@ -5,7 +5,7 @@
     ./configs/throne.nix
     ./configs/wireshark.nix
     ./configs/pipewire.nix
-    ./configs/konawalls.sys.nix
+    ./configs/konawalls.nix
     # ./configs/lightdm.nix
   ];
 
