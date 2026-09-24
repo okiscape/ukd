@@ -1,5 +1,4 @@
 import QtQuick
-import QtQuick.Layouts
 import Quickshell
 import qs.modules
 
@@ -13,25 +12,35 @@ PanelWindow {
     }
 
     implicitHeight: 40
-    color: "#1e1e2e"
+    color: "transparent"
 
-    RowLayout {
-        anchors.fill: parent
-
-        anchors.leftMargin: 12
-        anchors.rightMargin: 12
-        spacing: 8
-
-        LeftBlock {
-            Layout.alignment: Qt.AlignVCenter
+    mask: Region {
+        Region {
+            item: leftBlock
         }
 
-        Item {
-            Layout.fillWidth: true
+        Region {
+            item: rightBlock
+        }
+    }
+
+    Item {
+        anchors.fill: parent
+
+        LeftBlock {
+            id: leftBlock
+
+            anchors.left: parent.left
+            anchors.leftMargin: 12
+            anchors.verticalCenter: parent.verticalCenter
         }
 
         RightBlock {
-            Layout.alignment: Qt.AlignVCenter
+            id: rightBlock
+
+            anchors.right: parent.right
+            anchors.rightMargin: 12
+            anchors.verticalCenter: parent.verticalCenter
         }
     }
 }
