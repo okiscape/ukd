@@ -1,13 +1,19 @@
-{pkgs, inputs, ...}:
-
+{pkgs, inputs, lib, ...}:
+let
+  ukdignore = import ../../lib/ukdignore.nix {inherit lib;};
+  programModules = {
+    throne = ./configs/throne.nix;
+    wireshark = ./configs/wireshark.nix;
+    pipewire = ./configs/pipewire.nix;
+    konawalls = ./configs/konawalls.nix;
+    # lightdm = ./configs/lightdm.nix;
+  };
+  enabledModules = ukdignore.filterModules programModules;
+in
 {
-  imports = [
-    ./configs/throne.nix
-    ./configs/wireshark.nix
-    ./configs/pipewire.nix
-    ./configs/konawalls.nix
-    # ./configs/lightdm.nix
-  ];
+  imports = map
+    (name: enabledModules.${name})
+    (builtins.attrNames enabledModules);
 
   nixpkgs.config.allowUnfree = true;
   programs.uwsm.enable = true;

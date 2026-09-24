@@ -1,4 +1,18 @@
-{pkgs, inputs, ...}:
+{pkgs, inputs, lib, ...}:
+let
+  ukdignore = import ../../lib/ukdignore.nix {inherit lib;};
+  programModules = {
+    konawalls = inputs.konawalls.homeManagerModules.default;
+    driftwm = ./configs/driftwm.nix;
+    kitty = ./configs/kitty.nix;
+    starship = ./configs/starship.nix;
+    fish = ./configs/fish.nix;
+    fastfetch = ./configs/fastfetch.nix;
+    quickshell = ./configs/quickshell.nix;
+    hellwal = ./configs/hellwal.nix;
+  };
+  enabledModules = ukdignore.filterModules programModules;
+in
 {
   home.username = "okiscape";
   home.homeDirectory = "/home/okiscape";
@@ -42,14 +56,7 @@
     inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default pkgs.lightdm
   ];
 
-  imports = [
-    inputs.konawalls.homeManagerModules.default
-
-    ./configs/driftwm.nix
-    ./configs/kitty.nix
-    ./configs/starship.nix
-    ./configs/fish.nix
-    ./configs/fastfetch.nix
-    ./configs/hellwal.nix
-  ];
+  imports = map
+    (name: enabledModules.${name})
+    (builtins.attrNames enabledModules);
 }
