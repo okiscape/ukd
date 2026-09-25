@@ -11,7 +11,7 @@ PanelWindow {
         right: true
     }
 
-    implicitHeight: 40
+    implicitHeight: 30
     color: "transparent"
 
     mask: Region {
@@ -31,16 +31,19 @@ PanelWindow {
             id: leftBlock
 
             anchors.left: parent.left
-            anchors.leftMargin: 12
             anchors.verticalCenter: parent.verticalCenter
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+
         }
 
         RightBlock {
             id: rightBlock
 
             anchors.right: parent.right
-            anchors.rightMargin: 12
             anchors.verticalCenter: parent.verticalCenter
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
         }
     }
 }

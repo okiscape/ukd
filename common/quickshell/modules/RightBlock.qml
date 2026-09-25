@@ -5,7 +5,8 @@ Rectangle {
     property real expandedWidth: 180
 
     width: hoverHandler.hovered ? expandedWidth : collapsedWidth
-    height: 20
+
+    bottomLeftRadius: 20
 
     Behavior on width {
         NumberAnimation {
