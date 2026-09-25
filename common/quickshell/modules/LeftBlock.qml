@@ -1,4 +1,5 @@
 import QtQuick
+import qs.modules
 
 Rectangle {
     id: root
@@ -11,6 +12,8 @@ Rectangle {
     width: hoverHandler.hovered ? expandedWidth : collapsedWidth
     bottomRightRadius: 20
     clip: true
+
+    color: Colors.color8
 
     Timer {
         interval: 1000
@@ -36,13 +39,15 @@ Rectangle {
             text: Qt.formatTime(root.currentDate, "hh:mm:ss")
             font.pixelSize: 16
             anchors.verticalCenter: parent.verticalCenter
+            color: Colors.color6
         }
 
         Text {
             text: Qt.formatDate(root.currentDate, "dd.MM.yyyy")
             font.pixelSize: 16
             anchors.verticalCenter: parent.verticalCenter
-            opacity: 0.5
+            opacity: 0.7
+            color: Colors.color6
         }
     }
 

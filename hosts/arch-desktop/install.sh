@@ -62,7 +62,7 @@ install_configs() {
     # quickshell
     if ! ukd_is_ignored "quickshell" && [ -d "$REPO_DIR/common/quickshell" ]; then
         mkdir -p "$CONFIG_DIR/quickshell/modules"
-        for FILE in shell.qml colors.qml; do
+        for FILE in shell.qml Colors.qml; do
             if [ -f "$REPO_DIR/common/quickshell/$FILE" ]; then
                 link_config "$REPO_DIR/common/quickshell/$FILE" "$CONFIG_DIR/quickshell/$FILE"
             fi
