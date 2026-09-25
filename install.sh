@@ -49,7 +49,7 @@ echo " > stage: $STAGE" >&2
 case "$DISTRO" in
     nixos)
         cd "$REPO_DIR/hosts/nixos-desktop"
-        sh "hosts/nixos-desktop/install.sh"
+        sh "./install.sh"
         ;;
 
     ubuntu|debian)

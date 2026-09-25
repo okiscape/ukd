@@ -26,7 +26,7 @@ BOOTLOADER=$(menu "select bootloader:" "grub (default)" "systemd-boot")
 
 case "$BOOTLOADER" in
     grub*)
-        GRUB_DEVICE=$(ask " ? grub install device" "/dev/sda")
+        GRUB_DEVICE=$(ask " ? grub install device" "nodev")
         GRUB_EFI=$(confirm " ? grub efi support?" "y" && echo "true" || echo "false")
         GRUB_PROBER=$(confirm " ? enable os-prober (multi boot)?" "y" && echo "true" || echo "false")
 
@@ -47,6 +47,8 @@ case "$BOOTLOADER" in
       useOSProber = ${GRUB_PROBER};
 
       theme = ../../common/grub-theme;
+
+      splashImage = null;
     };
 
     efi.canTouchEfiVariables = true;
