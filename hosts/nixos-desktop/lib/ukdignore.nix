@@ -5,7 +5,7 @@ let
 
   ignoredNames = lib.filter
     (name: name != "")
-    (map stripComment (lib.splitString "\n" (builtins.readFile ../../../../.ukdignore)));
+    (map stripComment (lib.splitString "\n" (builtins.readFile ../../../.ukdignore)));
 in
 rec {
   inherit ignoredNames;
