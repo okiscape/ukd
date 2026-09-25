@@ -12,9 +12,7 @@
       cursor_shape_unfocused = "underline";
       copy_on_select = true;
       window_margin_width = 8;
-      extraConfig = ''
-        include ~/.config/hellwal/colors-kitty.conf
-      '';
+      include = "~/.cache/hellwal/kitty.conf";
     };
   };
 }
