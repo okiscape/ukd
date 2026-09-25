@@ -34,7 +34,6 @@ PanelWindow {
             anchors.verticalCenter: parent.verticalCenter
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-
         }
 
         RightBlock {
