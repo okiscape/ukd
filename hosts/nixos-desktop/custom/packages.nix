@@ -6,6 +6,7 @@ let
     wireshark = ./configs/wireshark.nix;
     pipewire = ./configs/pipewire.nix;
     konawalls = ./configs/konawalls.system.nix;
+    obs-studio = ./configs/obs-studio.nix;
     # lightdm = ./configs/lightdm.nix;
   };
   enabledModules = ukdignore.filterModules programModules;
@@ -28,6 +29,7 @@ in
     pkgs.flatpak pkgs.gnumake pkgs.musl pkgs.gcc
     pkgs.btrfs-progs pkgs.efibootmgr pkgs.refind
     pkgs.os-prober pkgs.pipewire pkgs.playerctl
+    pkgs.xdg-desktop-portal pkgs.xdg-desktop-portal-wlr
 
     # wm
     inputs.driftwm.packages.${pkgs.stdenv.hostPlatform.system}.default

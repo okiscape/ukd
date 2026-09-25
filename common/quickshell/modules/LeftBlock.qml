@@ -24,7 +24,7 @@ Rectangle {
 
     Behavior on width {
         NumberAnimation {
-            duration: 180
+            duration: 200
             easing.type: Easing.OutCubic
         }
     }
@@ -38,6 +38,7 @@ Rectangle {
         Text {
             text: Qt.formatTime(root.currentDate, "hh:mm:ss")
             font.pixelSize: 16
+            font.weight: 700
             anchors.verticalCenter: parent.verticalCenter
             color: Colors.color6
         }
