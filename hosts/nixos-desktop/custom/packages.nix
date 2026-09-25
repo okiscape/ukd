@@ -1,11 +1,11 @@
 {pkgs, inputs, lib, ...}:
 let
-  ukdignore = import ../../lib/ukdignore.nix {inherit lib;};
+  ukdignore = import ../lib/ukdignore.nix {inherit lib;};
   programModules = {
     throne = ./configs/throne.nix;
     wireshark = ./configs/wireshark.nix;
     pipewire = ./configs/pipewire.nix;
-    konawalls = ./configs/konawalls.nix;
+    konawalls = ./configs/konawalls.system.nix;
     # lightdm = ./configs/lightdm.nix;
   };
   enabledModules = ukdignore.filterModules programModules;

@@ -1,8 +1,8 @@
 {pkgs, inputs, lib, ...}:
 let
-  ukdignore = import ../../lib/ukdignore.nix {inherit lib;};
+  ukdignore = import ../lib/ukdignore.nix {inherit lib;};
   programModules = {
-    konawalls = inputs.konawalls.homeManagerModules.default;
+    konawalls = ./configs/konawalls.nix;
     driftwm = ./configs/driftwm.nix;
     kitty = ./configs/kitty.nix;
     starship = ./configs/starship.nix;
