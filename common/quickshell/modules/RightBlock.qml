@@ -5,9 +5,6 @@ import qs.modules
 Rectangle {
     id: root
 
-    property real collapsedWidth: 260
-    property real expandedWidth: 500
-
     property int cpuUsage: 0
     property int cpuTemp: 0
     property int ramUsagePct: 0
@@ -15,6 +12,9 @@ Rectangle {
     property int batteryPct: -1
     property string batteryStatus: ""
     property string netStatus: "none"
+
+    property real collapsedWidth: batteryPct > 0 ? 260 : 210
+    property real expandedWidth: 500
 
     width: hoverHandler.hovered ? expandedWidth : collapsedWidth
 
