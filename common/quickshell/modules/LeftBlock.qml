@@ -43,8 +43,24 @@ Rectangle {
         id: playerctlProc
         command: ["playerctl", "-a", "metadata", "--format", "{{status}}|{{artist}}|{{title}}"]
 
+        stderr: SplitParser {
+            onRead: _ => {
+                root.mediaArtist = "";
+                root.mediaTitle = "";
+                root.mediaStatus = "Stopped";
+                root.hasPlayer = false;
+            }
+        }
+
         stdout: SplitParser {
             onRead: data => {
+                if (!data || !data.trim()) {
+                    root.mediaArtist = "";
+                    root.mediaTitle = "";
+                    root.mediaStatus = "Stopped";
+                    root.hasPlayer = false;
+                    return;
+                }
                 let lines = data.trim().split("\n");
                 let foundPlaying = false;
                 let firstArtist = "";
