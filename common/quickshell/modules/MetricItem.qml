@@ -26,7 +26,8 @@ Column {
         anchors.horizontalCenter: parent.horizontalCenter
         text: hoverHandler.hovered ? root.value + "%" : root.label
         color: Colors.color6
-        font.pixelSize: 10
+        font.pixelSize: 12
+        font.family: "Monospace"
     }
 
     HoverHandler {

@@ -39,6 +39,7 @@ Rectangle {
             text: Qt.formatTime(root.currentDate, "hh:mm:ss")
             font.pixelSize: 16
             font.weight: 700
+            font.family: "Monospace"
             anchors.verticalCenter: parent.verticalCenter
             color: Colors.color14
         }
@@ -47,6 +48,7 @@ Rectangle {
             text: Qt.formatDate(root.currentDate, "dd.MM.yyyy")
             font.pixelSize: 16
             anchors.verticalCenter: parent.verticalCenter
+            font.family: "Monospace"
             opacity: 0.7
             color: Colors.color6
         }

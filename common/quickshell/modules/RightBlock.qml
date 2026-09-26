@@ -127,6 +127,7 @@ Rectangle {
             text: root.cpuTemp + "°C"
             color: Colors.color6
             font.pixelSize: 12
+            font.family: "Monospace"
         }
 
         Text {
