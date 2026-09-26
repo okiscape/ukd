@@ -34,7 +34,16 @@ Rectangle {
         command: [
             "sh", "-c",
             "cpu=$(LANG=C top -bn1 | grep 'Cpu(s)' | awk '{print $2 + $4}' | cut -d. -f1); cpu=${cpu:-0}; " +
-            "temp=$(cat /sys/class/thermal/thermal_zone0/temp 2>/dev/null | awk '{print int($1/1000)}'); temp=${temp:-0}; " +
+            "temp=0; " +
+            "for zone in /sys/class/thermal/thermal_zone*/temp; do " +
+            "  [ -r \"$zone\" ] && { t=$(cat \"$zone\" 2>/dev/null | awk '{print int($1/1000)}'); [ \"$t\" -gt 0 ] && [ \"$t\" -lt 150 ] && temp=$t && break; }; " +
+            "done; " +
+            "[ \"$temp\" -eq 0 ] && " +
+            "for hwmon in /sys/class/hwmon/hwmon*/temp*_input; do " +
+            "  [ -r \"$hwmon\" ] && { t=$(cat \"$hwmon\" 2>/dev/null | awk '{print int($1/1000)}'); [ \"$t\" -gt 0 ] && [ \"$t\" -lt 150 ] && temp=$t && break; }; " +
+            "done; " +
+            "[ \"$temp\" -eq 0 ] && command -v sensors >/dev/null && " +
+            "temp=$(sensors 2>/dev/null | grep -i 'core\\|package\\|cpu\\|temp' | head -1 | grep -o '+\\?[0-9]\\+' | head -1); temp=${temp:-0}; " +
             "ram=$(free | awk '/Mem:/ {print int($3/$2 * 100)}'); ram=${ram:-0}; " +
             "swap=$(free | awk '/Swap:/ {if ($2 > 0) print int($3/$2 * 100); else print 0}'); swap=${swap:-0}; " +
             "batdir=$(ls -d /sys/class/power_supply/BAT* 2>/dev/null | head -n1); " +
@@ -128,10 +137,6 @@ Rectangle {
                 : "\uf695"
             color: root.netStatus === "none" ? Colors.color1 : Colors.color6
             font.pixelSize: 14
-
-            HoverHandler {
-                id: netHover
-            }
         }
     }
 
