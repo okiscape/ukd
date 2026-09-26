@@ -11,12 +11,10 @@ PanelWindow {
         right: true
     }
 
-    // Высота самого бара и доп. место под тултипы, которые рисуются под ним.
     property int barHeight: 30
     property int tooltipSpace: 30
 
     implicitHeight: barHeight + tooltipSpace
-    // Резервируем только полосу бара, иначе окна снизу сдвинутся на всю высоту окна.
     exclusiveZone: barHeight
     color: "transparent"
 

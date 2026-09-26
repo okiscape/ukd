@@ -1,7 +1,6 @@
 import QtQuick
 import qs.modules
 
-// Колонка "подпись + бар" с тултипом по ховеру, показывающим точный процент.
 Column {
     id: root
 
@@ -23,8 +22,9 @@ Column {
     }
 
     Text {
+        id: labelText
         anchors.horizontalCenter: parent.horizontalCenter
-        text: root.label
+        text: hoverHandler.hovered ? root.value + "%" : root.label
         color: Colors.color6
         font.pixelSize: 10
     }
