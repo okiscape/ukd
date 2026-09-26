@@ -19,7 +19,7 @@ Rectangle {
     width: hoverHandler.hovered ? expandedWidth : collapsedWidth
 
     bottomLeftRadius: 20
-    color: Colors.color8
+    color: Colors.background
     clip: true
 
     Behavior on width {
@@ -85,21 +85,21 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
             label: "CPU"
             value: root.cpuUsage
-            barColor: Colors.color5
+            barColor: Colors.color6
         }
 
         MetricItem {
             anchors.verticalCenter: parent.verticalCenter
             label: "RAM"
             value: root.ramUsagePct
-            barColor: Colors.color5
+            barColor: Colors.color6
         }
 
         MetricItem {
             anchors.verticalCenter: parent.verticalCenter
             label: "SWP"
             value: root.swapUsagePct
-            barColor: Colors.color5
+            barColor: Colors.color6
             opacity: root.swapUsagePct > 0 ? 1.0 : 0.5
         }
 
@@ -107,14 +107,14 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
             label: "AC"
             value: root.batteryPct < 0 ? 0 : root.batteryPct
-            barColor: root.batteryStatus === "Charging" ? Colors.color2 : Colors.color5
+            barColor: root.batteryStatus === "Charging" ? Colors.color2 : Colors.color6
             visible: root.batteryPct >= 0
         }
 
         Text {
             anchors.verticalCenter: parent.verticalCenter
             text: root.cpuTemp + "°C"
-            color: Colors.color5
+            color: Colors.color6
             font.pixelSize: 12
         }
 
@@ -124,7 +124,7 @@ Rectangle {
             text: root.netStatus === "wifi" ? "\uf1eb"
                 : root.netStatus === "wired" ? "\uf6ff"
                 : "\uf695"
-            color: root.netStatus === "none" ? Colors.color1 : Colors.color5
+            color: root.netStatus === "none" ? Colors.color1 : Colors.color6
             font.pixelSize: 14
 
             HoverHandler {

@@ -24,7 +24,7 @@ Column {
     Text {
         anchors.horizontalCenter: parent.horizontalCenter
         text: root.label
-        color: Colors.color5
+        color: Colors.color6
         font.pixelSize: 10
     }
 

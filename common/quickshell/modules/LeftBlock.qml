@@ -13,7 +13,7 @@ Rectangle {
     bottomRightRadius: 20
     clip: true
 
-    color: Colors.color8
+    color: Colors.background
 
     Timer {
         interval: 1000
@@ -40,7 +40,7 @@ Rectangle {
             font.pixelSize: 16
             font.weight: 700
             anchors.verticalCenter: parent.verticalCenter
-            color: Colors.color6
+            color: Colors.color14
         }
 
         Text {
