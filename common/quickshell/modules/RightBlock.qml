@@ -86,6 +86,7 @@ Rectangle {
             label: "CPU"
             value: root.cpuUsage
             barColor: Colors.color6
+            tooltipText: "CPU " + root.cpuUsage + "% · " + root.cpuTemp + "°C"
         }
 
         MetricItem {
@@ -109,6 +110,7 @@ Rectangle {
             value: root.batteryPct < 0 ? 0 : root.batteryPct
             barColor: root.batteryStatus === "Charging" ? Colors.color2 : Colors.color6
             visible: root.batteryPct >= 0
+            tooltipText: root.batteryPct + "% · " + root.batteryStatus
         }
 
         Text {

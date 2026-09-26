@@ -9,6 +9,7 @@ Column {
     property int value: 0
     property color barColor: Colors.color5
     property string tooltipEdge: "bottom"
+    property string tooltipText: ""
     property real barTrackWidth: 28
 
     spacing: 3
@@ -36,6 +37,8 @@ Column {
         target: root
         edge: root.tooltipEdge
         shown: hoverHandler.hovered
-        text: root.value + "%"
+        text: root.tooltipText !== ""
+            ? root.tooltipText
+            : root.label + " " + root.value + "%"
     }
 }
