@@ -12,13 +12,14 @@ Rectangle {
     property string mediaTitle: ""
     property string mediaStatus: "Stopped"
     property bool hasPlayer: false
+    property real mediaPosition: 0   // seconds
+    property real mediaDuration: 0   // seconds
 
-    readonly property real baseWidth: timeText.implicitWidth + dateText.implicitWidth + 44
+    readonly property real baseWidth: timeText.implicitWidth + dateText.implicitWidth + 115
     readonly property real trackTextWidth: trackText.implicitWidth
     readonly property real mediaWidth: root.hasPlayer ? (baseWidth + trackTextWidth + 8) : 0
 
     width: hoverHandler.hovered ? (root.hasPlayer ? Math.max(mediaWidth, expandedWidth) : expandedWidth) : (root.hasPlayer ? Math.max(mediaWidth, collapsedWidth) : collapsedWidth)
-
 
     Behavior on width {
         NumberAnimation {
@@ -27,14 +28,12 @@ Rectangle {
         }
     }
 
-
     bottomRightRadius: 20
     clip: true
-
     color: Colors.background
 
     Timer {
-        interval: 1000
+        interval: 50
         running: true
         repeat: true
         onTriggered: root.currentDate = new Date()
@@ -87,12 +86,32 @@ Rectangle {
         }
     }
 
+    Process {
+        id: playerctlPosProc
+        command: ["playerctl", "metadata", "--format", "{{position}}|{{mpris:length}}"]
+
+        stdout: SplitParser {
+            onRead: data => {
+                let parts = data.trim().split("|");
+                if (parts.length >= 2) {
+                    let pos = parseFloat(parts[0]);
+                    let len = parseFloat(parts[1]);
+                    root.mediaPosition = isNaN(pos) ? 0 : pos / 1e6;
+                    root.mediaDuration = isNaN(len) ? 0 : len / 1e6;
+                }
+            }
+        }
+    }
+
     Timer {
         interval: 500
         running: true
         repeat: true
         triggeredOnStart: true
-        onTriggered: playerctlProc.running = true
+        onTriggered: {
+            playerctlProc.running = true;
+            if (root.hasPlayer) playerctlPosProc.running = true;
+        }
     }
 
     function formatTrackInfo(artist, title) {
@@ -106,6 +125,20 @@ Rectangle {
         let remaining = maxTotal - a.length - divider.length;
         if (t.length > remaining) t = t.slice(0, remaining - 1) + "…";
         return a + (a && t ? divider : "") + t;
+    }
+
+    function formatTime(secs, showHours) {
+        let s = Math.floor(secs);
+        let h = Math.floor(s / 3600);
+        let m = Math.floor((s % 3600) / 60);
+        let sec = s % 60;
+        let mm = String(m).padStart(2, "0");
+        let ss = String(sec).padStart(2, "0");
+        if (showHours) {
+            let hh = String(h).padStart(2, "0");
+            return hh + ":" + mm + ":" + ss;
+        }
+        return mm + ":" + ss;
     }
 
     Row {
@@ -133,15 +166,39 @@ Rectangle {
             color: Colors.color6
         }
 
+        Column {
+            anchors.verticalCenter: parent.verticalCenter
+            visible: root.hasPlayer
+
+            MetricBar {
+                trackWidth: positionText.implicitWidth
+                trackHeight: 4
+                value: root.mediaDuration > 0
+                       ? Math.round(root.mediaPosition / root.mediaDuration * 100)
+                       : 0
+            }
+
+            Text {
+                id: positionText
+                readonly property bool showHours: root.mediaDuration >= 3600
+                text: formatTime(root.mediaPosition, showHours)
+                      + "/"
+                      + formatTime(root.mediaDuration, showHours)
+                font.pixelSize: 10
+                font.family: "Monospace"
+                color: Colors.color6
+                opacity: 0.6
+            }
+        }
+
         Text {
+            anchors.verticalCenter: parent.verticalCenter
             id: trackText
             text: root.hasPlayer ? formatTrackInfo(root.mediaArtist, root.mediaTitle) : ""
             font.pixelSize: 13
             font.family: "Monospace"
             color: Colors.color6
             elide: Text.ElideRight
-            anchors.verticalCenter: parent.verticalCenter
-            visible: root.hasPlayer
 
             MouseArea {
                 anchors.fill: parent
@@ -159,9 +216,9 @@ Rectangle {
             }
         }
 
-        Process { id: prevProc; command: ["playerctl", "previous"] }
+        Process { id: prevProc;      command: ["playerctl", "previous"]   }
         Process { id: playPauseProc; command: ["playerctl", "play-pause"] }
-        Process { id: nextProc; command: ["playerctl", "next"] }
+        Process { id: nextProc;      command: ["playerctl", "next"]       }
     }
 
     HoverHandler {
