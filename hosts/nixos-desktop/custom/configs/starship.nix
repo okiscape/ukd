@@ -1,48 +1,5 @@
 {
-  programs.starship = {
-    enable = true;
-    enableFishIntegration = true;
+  programs.starship.enable = true;
 
-    settings = {
-      add_newline = false;
-
-      format = ''
-        $directory [>](white) '';
-      right_format = "$battery ($status:$cmd_duration)$git_metrics$git_branch$git_commit";
-
-      directory = {
-        read_only = "ro:";
-        format = "$read_only[$path](italic white)";
-      };
-
-      status = {
-        disabled = false;
-        format = "$status";
-        success_symbol = "0";
-      };
-      battery = {
-        disabled = false;
-        format = "ac:$percentage";
-        display = [{
-          threshold = 100;
-        }];
-      };
-      cmd_duration = {
-        min_time = 0;
-        format = "$duration";
-      };
-      git_metrics = {
-        disabled = false;
-        format = " +$added:-$deleted";
-      };
-      git_branch = {
-        format = " branch:$branch";
-      };
-      git_commit = {
-        only_detached = false;
-        commit_hash_length = 6;
-        format = " commit:$hash";
-      };
-    };
-  };
+  xdg.configFile."starship.toml".source = ../../../../common/starship.toml;
 }

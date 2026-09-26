@@ -80,8 +80,8 @@ install_configs() {
     fi
 
     # kitty
-    if ! ukd_is_ignored "kitty" && [ -f "$REPO_DIR/hosts/${DISTRO_HOST:-arch-desktop}/kitty.conf" ]; then
-        link_config "$REPO_DIR/hosts/${DISTRO_HOST:-arch-desktop}/kitty.conf" "$CONFIG_DIR/kitty/kitty.conf" "$CONFIG_DIR/kitty"
+    if ! ukd_is_ignored "kitty" && [ -f "$REPO_DIR/common/kitty.conf" ]; then
+        link_config "$REPO_DIR/common/kitty.conf" "$CONFIG_DIR/kitty/kitty.conf" "$CONFIG_DIR/kitty"
         echo "  > kitty config linked"
     fi
 
@@ -98,8 +98,8 @@ install_configs() {
     fi
 
     # hellwal
-    if ! ukd_is_ignored "hellwal" && [ -f "$REPO_DIR/common/hellwal/colors.json" ]; then
-        link_config "$REPO_DIR/common/hellwal/colors.json" "$CONFIG_DIR/hellwal/templates/colors.json" "$CONFIG_DIR/hellwal"
+    if ! ukd_is_ignored "hellwal" && [ -d "$REPO_DIR/common/hellwal" ]; then
+        link_dir "$REPO_DIR/common/hellwal" "$CONFIG_DIR/hellwal/templates"
         echo "  > hellwal config linked"
     fi
 
@@ -112,8 +112,8 @@ install_configs() {
     fi
 
     # starship
-    if ! ukd_is_ignored "starship" && [ -f "$REPO_DIR/hosts/${DISTRO_HOST:-arch-desktop}/starship.toml" ]; then
-        link_config "$REPO_DIR/hosts/${DISTRO_HOST:-arch-desktop}/starship.toml" "$CONFIG_DIR/starship.toml"
+    if ! ukd_is_ignored "starship" && [ -f "$REPO_DIR/common/starship.toml" ]; then
+        link_config "$REPO_DIR/common/starship.toml" "$CONFIG_DIR/starship.toml"
         echo "  > starship config linked"
     fi
 
