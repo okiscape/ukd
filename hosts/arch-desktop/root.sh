@@ -83,7 +83,12 @@ echo " ! this module currenly not available, we're working on it. stay tuned!"
 # useradd -m "$DESKTOP_USER"
 # echo "-- user: set password"
 # passwd "$DESKTOP_USER"
-# usermod -aG wheel,audio,video,input,storage,network $DESKTOP_USER
+# usermod -aG wheel,audio,video,input,storage,network,wallpapers $DESKTOP_USER
+
+# echo "-- user: wallpapers group (konawalls, see hosts/arch-desktop/system/konawalls.conf)"
+# groupadd -f wallpapers
+# install -Dm644 /mnt/ukd-konawalls.conf /etc/tmpfiles.d/ukd-konawalls.conf
+# systemd-tmpfiles --create /etc/tmpfiles.d/ukd-konawalls.conf
 
 # echo "-- root: set password"
 # passwd
@@ -98,6 +103,7 @@ echo " ! this module currenly not available, we're working on it. stay tuned!"
 # EOF
 
 # chmod +x /mnt/root/setup-chroot.sh
+# install -Dm644 "$REPO_DIR/hosts/arch-desktop/system/konawalls.conf" /mnt/ukd-konawalls.conf
 # arch-chroot /mnt /root/setup-chroot.sh
 # rm /mnt/root/setup-chroot.sh
 

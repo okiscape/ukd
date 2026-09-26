@@ -13,6 +13,34 @@ REPO_DIR="$(cd "$CUR_DIR/../.." && pwd)"
 
 ukd_ignore_load "$REPO_DIR/.ukdignore" || exit 1
 
+install_system_config() {
+    echo " --- installing system configuration..."
+
+    if ! ukd_is_ignored "konawalls" && [ -f "$CUR_DIR/system/konawalls.conf" ]; then
+        TARGET_USER="${SUDO_USER:-${USER:-}}"
+
+        if getent group wallpapers >/dev/null 2>&1; then
+            echo "  > wallpapers group already exists"
+        else
+            sudo groupadd -f wallpapers
+            echo "  > wallpapers group created"
+        fi
+
+        if [ -z "$TARGET_USER" ] || [ "$TARGET_USER" = "root" ]; then
+            echo " ! cannot detect desktop user, add it manually: sudo usermod -aG wallpapers <user>"
+        elif id -nG "$TARGET_USER" | tr ' ' '\n' | grep -qx "wallpapers"; then
+            echo "  > user $TARGET_USER is already in wallpapers group"
+        else
+            sudo usermod -aG wallpapers "$TARGET_USER"
+            echo "  > user $TARGET_USER added to wallpapers group (relogin to apply)"
+        fi
+
+        sudo install -Dm644 "$CUR_DIR/system/konawalls.conf" /etc/tmpfiles.d/ukd-konawalls.conf
+        sudo systemd-tmpfiles --create /etc/tmpfiles.d/ukd-konawalls.conf
+        echo "  > wallpapers tmpfiles rules applied"
+    fi
+}
+
 install_repo_packages() {
     echo " --- installing pacman packages..."
     PACKAGES=$(grep -v '^#' "$CUR_DIR/packages.txt" | tr '\n' ' ')
@@ -47,45 +75,31 @@ install_configs() {
 
     # driftwm
     if ! ukd_is_ignored "driftwm" && [ -f "$REPO_DIR/common/driftwm.toml" ]; then
-        mkdir -p "$CONFIG_DIR/driftwm"
-        link_config "$REPO_DIR/common/driftwm.toml" "$CONFIG_DIR/driftwm/config.toml"
+        link_config "$REPO_DIR/common/driftwm.toml" "$CONFIG_DIR/driftwm/config.toml" "$CONFIG_DIR/driftwm"
         echo "  > driftwm config linked"
     fi
 
     # kitty
     if ! ukd_is_ignored "kitty" && [ -f "$REPO_DIR/hosts/${DISTRO_HOST:-arch-desktop}/kitty.conf" ]; then
-        mkdir -p "$CONFIG_DIR/kitty"
-        link_config "$REPO_DIR/hosts/${DISTRO_HOST:-arch-desktop}/kitty.conf" "$CONFIG_DIR/kitty/kitty.conf"
+        link_config "$REPO_DIR/hosts/${DISTRO_HOST:-arch-desktop}/kitty.conf" "$CONFIG_DIR/kitty/kitty.conf" "$CONFIG_DIR/kitty"
         echo "  > kitty config linked"
     fi
 
     # quickshell
     if ! ukd_is_ignored "quickshell" && [ -d "$REPO_DIR/common/quickshell" ]; then
-        mkdir -p "$CONFIG_DIR/quickshell/modules"
-        for FILE in shell.qml Colors.qml; do
-            if [ -f "$REPO_DIR/common/quickshell/$FILE" ]; then
-                link_config "$REPO_DIR/common/quickshell/$FILE" "$CONFIG_DIR/quickshell/$FILE"
-            fi
-        done
-        for FILE in "$REPO_DIR"/common/quickshell/modules/*.qml; do
-            if [ -f "$FILE" ]; then
-                link_config "$FILE" "$CONFIG_DIR/quickshell/modules/$(basename "$FILE")"
-            fi
-        done
+        link_dir "$REPO_DIR/common/quickshell" "$CONFIG_DIR/quickshell"
         echo "  > quickshell config linked"
     fi
 
     # konawalls
     if ! ukd_is_ignored "konawalls" && [ -f "$REPO_DIR/common/konawalls.json" ]; then
-        mkdir -p "$CONFIG_DIR/konawalls"
-        link_config "$REPO_DIR/common/konawalls.json" "$CONFIG_DIR/konawalls/config.json"
+        link_config "$REPO_DIR/common/konawalls.json" "$CONFIG_DIR/konawalls/config.json" "$CONFIG_DIR/konawalls"
         echo "  > konawalls config linked"
     fi
 
     # hellwal
     if ! ukd_is_ignored "hellwal" && [ -f "$REPO_DIR/common/hellwal/colors.json" ]; then
-        mkdir -p "$CONFIG_DIR/hellwal/templates"
-        link_config "$REPO_DIR/common/hellwal/colors.json" "$CONFIG_DIR/hellwal/templates/colors.json"
+        link_config "$REPO_DIR/common/hellwal/colors.json" "$CONFIG_DIR/hellwal/templates/colors.json" "$CONFIG_DIR/hellwal"
         echo "  > hellwal config linked"
     fi
 
@@ -105,8 +119,7 @@ install_configs() {
 
     # fastfetch
     if ! ukd_is_ignored "fastfetch" && [ -f "$REPO_DIR/common/fastfetch-logo.png" ]; then
-        mkdir -p "$CONFIG_DIR/fastfetch"
-        link_config "$REPO_DIR/common/fastfetch-logo.png" "$CONFIG_DIR/fastfetch/logo.png"
+        link_config "$REPO_DIR/common/fastfetch-logo.png" "$CONFIG_DIR/fastfetch/logo.png" "$CONFIG_DIR/fastfetch"
         echo "  > fastfetch logo linked"
     fi
 
@@ -124,6 +137,7 @@ install_configs() {
 install_repo_packages
 install_aur_packages
 install_configs
+install_system_config
 
 echo ""
 echo " ^ arch-desktop install.sh done"
