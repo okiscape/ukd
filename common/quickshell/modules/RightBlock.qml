@@ -132,15 +132,6 @@ Rectangle {
             HoverHandler {
                 id: netHover
             }
-
-            HoverTooltip {
-                target: netIcon
-                edge: "bottom"
-                shown: netHover.hovered
-                text: root.netStatus === "wifi" ? "Wi-Fi"
-                    : root.netStatus === "wired" ? "Ethernet"
-                    : "No connection"
-            }
         }
     }
 

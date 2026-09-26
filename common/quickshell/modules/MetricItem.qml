@@ -32,13 +32,4 @@ Column {
     HoverHandler {
         id: hoverHandler
     }
-
-    HoverTooltip {
-        target: root
-        edge: root.tooltipEdge
-        shown: hoverHandler.hovered
-        text: root.tooltipText !== ""
-            ? root.tooltipText
-            : root.label + " " + root.value + "%"
-    }
 }

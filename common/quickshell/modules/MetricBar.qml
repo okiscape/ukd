@@ -1,7 +1,6 @@
 import QtQuick
 import qs.modules
 
-// Короткий горизонтальный прогресс-бар. value: 0..100
 Item {
     id: root
 
@@ -14,14 +13,12 @@ Item {
     width: trackWidth
     height: trackHeight
 
-    // фон/трек бара
     Rectangle {
         anchors.fill: parent
         radius: height / 2
         color: root.trackColor
     }
 
-    // заполнение, растущее слева направо по мере роста value
     Rectangle {
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
