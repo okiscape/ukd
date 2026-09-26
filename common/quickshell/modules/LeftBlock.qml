@@ -213,12 +213,21 @@ Rectangle {
                         prevProc.running = true;
                     }
                 }
+                onWheel: (wheel) => {
+                    if (wheel.angleDelta.y > 0) {
+                        volUpProc.running = true;
+                    } else {
+                        volDownProc.running = true;
+                    }
+                }
             }
         }
 
-        Process { id: prevProc;      command: ["playerctl", "previous"]   }
-        Process { id: playPauseProc; command: ["playerctl", "play-pause"] }
-        Process { id: nextProc;      command: ["playerctl", "next"]       }
+        Process { id: prevProc;      command: ["playerctl", "previous"]        }
+        Process { id: playPauseProc; command: ["playerctl", "play-pause"]      }
+        Process { id: nextProc;      command: ["playerctl", "next"]            }
+        Process { id: volUpProc;     command: ["playerctl", "volume", "0.01+"] }
+        Process { id: volDownProc;   command: ["playerctl", "volume", "0.01-"] }
     }
 
     HoverHandler {
