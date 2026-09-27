@@ -1,6 +1,8 @@
 import QtQuick
+import Quickshell
 import Quickshell.Io
 import qs.modules
+import Quickshell.Services.SystemTray
 
 Rectangle {
     id: root
@@ -28,7 +30,7 @@ Rectangle {
     ])
 
     function calcWidth(items) {
-        let visibleItems = items.filter(item => item && item.visible);
+        let visibleItems = items.filter(item => item && item.visible && item.implicitWidth > 0);
         if (visibleItems.length === 0) return 0;
 
         let sumWidth = visibleItems.reduce((acc, item) => acc + item.implicitWidth, 0);
@@ -125,6 +127,57 @@ Rectangle {
 
         padding: 10
         spacing: 14
+
+        Row {
+            id: trayRow
+            anchors.verticalCenter: parent.verticalCenter
+            spacing: 8
+
+            Repeater {
+                model: SystemTray.items
+
+                Item {
+                    required property var modelData
+
+                    width: 18
+                    height: 18
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    Image {
+                        anchors.fill: parent
+                        source: (modelData.icon && modelData.icon !== "")
+                                ? modelData.icon
+                                : "application-x-executable"
+                        fillMode: Image.PreserveAspectFit
+                        smooth: true
+                    }
+
+                    QsMenuAnchor {
+                        id: menuAnchor
+                        menu: modelData.menu
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.MiddleButton
+
+                        onClicked: mouse => {
+                            if (mouse.button === Qt.LeftButton) {
+                                modelData.activate();
+                            } else if (mouse.button === Qt.RightButton) {
+                                if (modelData.hasMenu) {
+                                    menuAnchor.open();
+                                } else {
+                                    modelData.activate();
+                                }
+                            } else if (mouse.button === Qt.MiddleButton) {
+                                modelData.secondaryActivate();
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         MetricItem {
             id: cpuMetric
