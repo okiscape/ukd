@@ -15,8 +15,8 @@ Rectangle {
     property real mediaPosition: 0   // seconds
     property real mediaDuration: 0   // seconds
 
-    readonly property real baseWidth: timeText.implicitWidth + dateText.implicitWidth + 115
-    readonly property real trackTextWidth: trackText.implicitWidth
+    readonly property real baseWidth: timeText.implicitWidth + dateText.implicitWidth + 50
+    readonly property real trackTextWidth: trackText.implicitWidth + positionText.implicitWidth
     readonly property real mediaWidth: root.hasPlayer ? (baseWidth + trackTextWidth + 8) : 0
 
     width: hoverHandler.hovered ? (root.hasPlayer ? Math.max(mediaWidth, expandedWidth) : expandedWidth) : (root.hasPlayer ? Math.max(mediaWidth, collapsedWidth) : collapsedWidth)
