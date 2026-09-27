@@ -118,9 +118,9 @@ install_configs() {
     fi
 
     # fastfetch
-    if ! ukd_is_ignored "fastfetch" && [ -f "$REPO_DIR/common/fastfetch-logo.png" ]; then
-        link_config "$REPO_DIR/common/fastfetch-logo.png" "$CONFIG_DIR/fastfetch/logo.png" "$CONFIG_DIR/fastfetch"
-        echo "  > fastfetch logo linked"
+    if ! ukd_is_ignored "fastfetch" && [ -d "$REPO_DIR/common/fastfetch" ]; then
+        link_dir "$REPO_DIR/common/fastfetch" "$CONFIG_DIR/fastfetch"
+        echo "  > fastfetch configs linked"
     fi
 
     # grub theme
