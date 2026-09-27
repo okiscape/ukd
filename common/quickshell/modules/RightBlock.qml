@@ -155,23 +155,25 @@ Rectangle {
                     QsMenuAnchor {
                         id: menuAnchor
                         menu: modelData.menu
+                        anchor.item: mouseArea
+                        anchor.edges: Edges.Bottom
+                        anchor.gravity: Edges.Bottom
                     }
 
                     MouseArea {
+                        id: mouseArea
                         anchors.fill: parent
                         acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.MiddleButton
 
                         onClicked: mouse => {
+                            let globalPos = mouseArea.mapToGlobal(mouse.x, mouse.y);
+
                             if (mouse.button === Qt.LeftButton) {
                                 modelData.activate();
                             } else if (mouse.button === Qt.RightButton) {
-                                if (modelData.hasMenu) {
-                                    menuAnchor.open();
-                                } else {
-                                    modelData.activate();
-                                }
+                                menuAnchor.open()
                             } else if (mouse.button === Qt.MiddleButton) {
-                                modelData.secondaryActivate();
+                                modelData.secondaryActivate(globalPos.x, globalPos.y);
                             }
                         }
                     }
