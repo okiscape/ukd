@@ -13,7 +13,7 @@ Rectangle {
     property string batteryStatus: ""
     property string netStatus: "none"
 
-    property real collapsedWidth: batteryPct > 0 ? 260 : 210
+    property real collapsedWidth: batteryPct > 0 ? 300 : 240
     property real expandedWidth: 500
 
     width: hoverHandler.hovered ? expandedWidth : collapsedWidth
