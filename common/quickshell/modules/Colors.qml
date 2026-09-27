@@ -15,11 +15,13 @@ QtObject {
         path: root.cacheDir + "/hellwal/colors.json"
         watchChanges: true
         onFileChanged: reload()
+        printErrors: false
     }
 
     readonly property FileView pywalFile: FileView {
         path: root.cacheDir + "/wal/colors.json"
         watchChanges: true
+        printErrors: false
     }
 
     readonly property var _data: {
