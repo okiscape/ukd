@@ -1,8 +1,8 @@
 {
-  xdg.configFile."fastfetch/config.json".source =
-    ../../../../common/fastfetch/config.json;
-  xdg.configFile."fastfetch/jsoned.json".source =
-    ../../../../common/fastfetch/jsoned.json;
+  xdg.configFile."fastfetch/config.jsonc".source =
+    ../../../../common/fastfetch/config.jsonc;
+  xdg.configFile."fastfetch/jsoned.jsonc".source =
+    ../../../../common/fastfetch/jsoned.jsonc;
   xdg.configFile."fastfetch/logo.png".source =
     ../../../../common/fastfetch/logo.png;
 }

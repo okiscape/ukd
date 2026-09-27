@@ -108,6 +108,7 @@ install_configs() {
         mkdir -p "$CONFIG_DIR/fish"
         grep -q "fish_init" "$CONFIG_DIR/fish/config.fish" 2>/dev/null || \
             echo "source '$REPO_DIR/common/fish_init.sh'" >> "$CONFIG_DIR/fish/config.fish"
+        link_dir "$REPO_DIR/common/fish_functions" "$CONFIG_DIR/fish/functions"
         echo "  > fish config linked"
     fi
 
