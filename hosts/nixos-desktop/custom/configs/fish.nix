@@ -5,5 +5,5 @@
   };
 
   xdg.configFile."fish/functions/".source =
-    ../../../../common/fish_functions/;
+    ../../../../common/fish_functions;
 }
