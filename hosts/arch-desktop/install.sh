@@ -103,6 +103,13 @@ install_configs() {
         echo "  > hellwal config linked"
     fi
 
+    # cava
+    if ! ukd_is_ignored "cava"; then
+        mkdir -p "$CONFIG_DIR/cava"
+        ln -sf "$HOME/.cache/hellwal/cava" "$CONFIG_DIR/cava/config"
+        echo "  > cava config linked"
+    fi
+
     # fish
     if ! ukd_is_ignored "fish" && [ -f "$REPO_DIR/common/fish_init.sh" ]; then
         mkdir -p "$CONFIG_DIR/fish"

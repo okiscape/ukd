@@ -7,6 +7,7 @@ let
     pipewire = ./configs/pipewire.nix;
     konawalls = ./configs/konawalls.system.nix;
     obs-studio = ./configs/obs-studio.nix;
+    cava = ./configs/cava.nix;
     # lightdm = ./configs/lightdm.nix;
   };
   enabledModules = ukdignore.filterModules programModules;
@@ -36,7 +37,7 @@ in
     pkgs.uwsm pkgs.lightdm pkgs.slurp
 
     # ui, wallpapers
-    pkgs.quickshell pkgs.awww pkgs.hellwal
+    pkgs.quickshell pkgs.awww pkgs.hellwal pkgs.cava
 
     # wo/ ui utils
     pkgs.wl-clipboard pkgs.cliphist

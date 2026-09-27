@@ -1,7 +1,6 @@
 # arch-desktop packages
 # one package per line, "#" starts a comment
 # installed with: sudo pacman -S --needed <packages>
-# see aur.txt for AUR packages (installed with yay)
 
 # base
 git

@@ -1,0 +1,8 @@
+[color]
+horizontal_gradient = 1
+horizontal_gradient_color_1 = '#%%color1.hex%%'
+horizontal_gradient_color_2 = '#%%color7.hex%%'
+horizontal_gradient_color_3 = '#%%color1.hex%%'
+
+[smoothing]
+noise_reduction = 45
