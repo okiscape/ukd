@@ -5,12 +5,9 @@ import QtQuick
 import Quickshell
 import Quickshell.Services.Notifications
 
-// Singleton — доступен глобально как NotificationService
-// Зарегистрируй в qsconfig.json или через qmldir в modules/
 Singleton {
     id: root
 
-    // Внутренний враппер над Notification — хранит доп. состояние
     component NotifWrapper: QtObject {
         required property int nid
         property Notification notification
@@ -23,7 +20,6 @@ Singleton {
         property string urgency:  notification?.urgency.toString() ?? "normal"
         property double time
 
-        // Когда Quickshell дропает объект (dismiss/expire) — убираем из списка
         onNotificationChanged: {
             if (notification === null)
                 root.remove(nid)
@@ -58,7 +54,7 @@ Singleton {
         bodyHyperlinksSupported: true
 
         onNotification: (notif) => {
-            console.log("wha")
+            console.log("notification recieved")
             notif.tracked = true
 
             const w = wrapperComp.createObject(root, {
@@ -87,7 +83,7 @@ Singleton {
         const w = list[idx]
         if (w.notification !== null) w.notification.dismiss()
         list.splice(idx, 1)
-        list = list.slice(0)  // триггерим реактивность
+        list = list.slice(0)
     }
 
     function hidePopup(nid) {

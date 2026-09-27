@@ -5,6 +5,7 @@ Rectangle {
     id: card
 
     required property var notification
+    property bool closing: notification.closing ?? false
 
     width: 360
     height: col.implicitHeight + 20
@@ -50,7 +51,6 @@ Rectangle {
         }
         spacing: 3
 
-        // Имя приложения
         Text {
             text: notification.appName
             color: Colors.accent
@@ -59,9 +59,9 @@ Rectangle {
             width: parent.width
             elide: Text.ElideRight
             visible: notification.appName !== ""
+            font.family: "Monospace"
         }
 
-        // Заголовок
         Text {
             text: notification.summary
             color: Colors.foreground
@@ -70,9 +70,9 @@ Rectangle {
             width: parent.width
             elide: Text.ElideRight
             bottomPadding: 2
+            font.family: "Monospace"
         }
 
-        // Тело
         Text {
             text: notification.body
             color: Colors.color7
@@ -82,6 +82,12 @@ Rectangle {
             maximumLineCount: 4
             elide: Text.ElideRight
             visible: notification.body !== ""
+            font.family: "Monospace"
         }
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        onClicked: NotificationService.remove(notification.nid)
     }
 }

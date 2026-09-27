@@ -11,25 +11,35 @@ PanelWindow {
 
     anchors {
         top: true
-        left: true
-        right: true
     }
 
     color: "transparent"
-    // mask: Region {
-    //     Region {
-    //         item: popupArea
-    //     }
-    //     Region {
-    //         item: hubHover.hovered ? hubArea : null
-    //     }
-    // }
+    implicitWidth: 360
+    implicitHeight: notificationColumn.implicitHeight + 50
 
-    Repeater {
-        model: NotificationService.list
-        NotificationCard {
-            required property var modelData
-            notification: modelData
+    exclusionMode: ExclusionMode.Ignore
+
+    mask: Region {
+        Region {
+            item: notificationColumn
+        }
+    }
+
+    Column {
+        id: notificationColumn
+        anchors {
+            top: parent.top
+            horizontalCenter: parent.horizontalCenter
+        }
+        spacing: 5
+
+        Repeater {
+            model: NotificationService.popupList
+            NotificationCard {
+                required property var modelData
+                notification: modelData
+                closing: modelData.closing
+            }
         }
     }
 }
