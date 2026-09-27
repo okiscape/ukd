@@ -132,7 +132,7 @@ Rectangle {
 
     function formatTrackInfo(artist, title) {
         if (!artist && !title) return "";
-        let maxArtist = 150;
+        let maxArtist = 20;
         let maxTotal = 50;
         let divider = " - ";
         let a = artist ? artist : "";
@@ -174,8 +174,8 @@ Rectangle {
 
         Text {
             id: dateText
-            text: Qt.formatDate(root.currentDate, "dd.MM.yyyy")
-            font.pixelSize: 16
+            text: Qt.formatDate(root.currentDate, "ddd dd.MM.yyyy")
+            font.pixelSize: 14
             anchors.verticalCenter: parent.verticalCenter
             font.family: "Monospace"
             opacity: 0.7

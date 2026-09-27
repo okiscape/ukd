@@ -12,9 +12,37 @@ Rectangle {
     property int batteryPct: -1
     property string batteryStatus: ""
     property string netStatus: "none"
+    property int volumePct: 0
+    property int brightnessPct: 0
 
-    property real collapsedWidth: batteryPct > 0 ? 300 : 240
-    property real expandedWidth: 500
+    // Полная ширина автоматически считывается с родительского Row
+    property real expandedWidth: rightRow.implicitWidth
+
+    // Расчет ширины для свернутого состояния
+    // Если VOL и BRT должны быть видны ВСЕГДА — оставьте их в массиве.
+    // Если они должны появляться ТОЛЬКО при наведении — удалите volumeMetric и brightnessMetric из массива ниже.
+    property real collapsedWidth: calcWidth([
+        cpuMetric,
+        ramMetric,
+        swapMetric,
+        root.batteryPct >= 0 ? batteryMetric : null,
+        tempMetric,
+        netMetric,
+        volumeMetric,
+        brightnessMetric
+    ])
+
+    function calcWidth(items) {
+        let visibleItems = items.filter(item => item && item.visible);
+        if (visibleItems.length === 0) return 0;
+
+        let sumWidth = visibleItems.reduce((acc, item) => acc + item.implicitWidth, 0);
+        let gaps = visibleItems.length - 1;
+        let totalSpacing = gaps * rightRow.spacing;
+        let totalPadding = rightRow.padding * 2;
+
+        return sumWidth + totalSpacing + totalPadding;
+    }
 
     width: hoverHandler.hovered ? expandedWidth : collapsedWidth
 
@@ -26,6 +54,14 @@ Rectangle {
         NumberAnimation {
             duration: 180
             easing.type: Easing.OutCubic
+        }
+    }
+
+    Process {
+        id: cmdProc
+        function exec(cmd) {
+            command = ["sh", "-c", cmd];
+            running = true;
         }
     }
 
@@ -55,13 +91,15 @@ Rectangle {
             "if [ -z \"$iface\" ]; then net=none; " +
             "elif echo \"$iface\" | grep -q '^wl'; then net=wifi; " +
             "else net=wired; fi; " +
-            "echo \"$cpu $temp $ram $swap $bat $batstat $net\""
+            "vol=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ 2>/dev/null | awk '{print int($2*100)}'); vol=${vol:-0}; " +
+            "bright=$(brightnessctl -m 2>/dev/null | cut -d, -f4 | tr -d '%'); bright=${bright:-0}; " +
+            "echo \"$cpu $temp $ram $swap $bat $batstat $net $vol $bright\""
         ]
 
         stdout: SplitParser {
             onRead: data => {
                 let parts = data.trim().split(" ");
-                if (parts.length >= 7) {
+                if (parts.length >= 9) {
                     root.cpuUsage = parseInt(parts[0]) || 0;
                     root.cpuTemp = parseInt(parts[1]) || 0;
                     root.ramUsagePct = parseInt(parts[2]) || 0;
@@ -69,6 +107,8 @@ Rectangle {
                     root.batteryPct = parseInt(parts[4]);
                     root.batteryStatus = parts[5];
                     root.netStatus = parts[6];
+                    root.volumePct = parseInt(parts[7]) || 0;
+                    root.brightnessPct = parseInt(parts[8]) || 0;
                 }
             }
         }
@@ -83,6 +123,7 @@ Rectangle {
     }
 
     Row {
+        id: rightRow
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.right: parent.right
@@ -91,6 +132,7 @@ Rectangle {
         spacing: 14
 
         MetricItem {
+            id: cpuMetric
             anchors.verticalCenter: parent.verticalCenter
             label: "CPU"
             value: root.cpuUsage
@@ -99,6 +141,7 @@ Rectangle {
         }
 
         MetricItem {
+            id: ramMetric
             anchors.verticalCenter: parent.verticalCenter
             label: "RAM"
             value: root.ramUsagePct
@@ -106,6 +149,7 @@ Rectangle {
         }
 
         MetricItem {
+            id: swapMetric
             anchors.verticalCenter: parent.verticalCenter
             label: "SWP"
             value: root.swapUsagePct
@@ -114,6 +158,7 @@ Rectangle {
         }
 
         MetricItem {
+            id: batteryMetric
             anchors.verticalCenter: parent.verticalCenter
             label: "AC"
             value: root.batteryPct < 0 ? 0 : root.batteryPct
@@ -123,6 +168,7 @@ Rectangle {
         }
 
         Text {
+            id: tempMetric
             anchors.verticalCenter: parent.verticalCenter
             text: root.cpuTemp + "°C"
             color: Colors.color6
@@ -131,13 +177,70 @@ Rectangle {
         }
 
         Text {
-            id: netIcon
+            id: netMetric
             anchors.verticalCenter: parent.verticalCenter
             text: root.netStatus === "wifi" ? "\uf1eb"
                 : root.netStatus === "wired" ? "\uf6ff"
                 : "\uf695"
             color: root.netStatus === "none" ? Colors.color1 : Colors.color6
             font.pixelSize: 14
+        }
+
+        Item {
+            id: volumeMetric
+            implicitWidth: volMetric.implicitWidth
+            implicitHeight: volMetric.implicitHeight
+            anchors.verticalCenter: parent.verticalCenter
+
+            MetricItem {
+                id: volMetric
+                label: "VOL"
+                value: root.volumePct
+                barColor: Colors.color6
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                onWheel: wheel => {
+                    if (wheel.angleDelta.y > 0) {
+                        cmdProc.exec("wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+");
+                    } else {
+                        cmdProc.exec("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-");
+                    }
+                    metricsProc.running = true;
+                }
+                onClicked: {
+                    cmdProc.exec("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle");
+                    metricsProc.running = true;
+                }
+            }
+        }
+
+        Item {
+            id: brightnessMetric
+            implicitWidth: brtMetric.implicitWidth
+            implicitHeight: brtMetric.implicitHeight
+            anchors.verticalCenter: parent.verticalCenter
+
+            MetricItem {
+                id: brtMetric
+                label: "BRT"
+                value: root.brightnessPct
+                barColor: Colors.color6
+                tooltipText: "Brightness: " + root.brightnessPct + "%"
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                onWheel: wheel => {
+                    if (wheel.angleDelta.y > 0) {
+                        cmdProc.exec("brightnessctl set +5%");
+                    } else {
+                        cmdProc.exec("brightnessctl set 5%-");
+                    }
+                    metricsProc.running = true;
+                }
+            }
         }
     }
 
