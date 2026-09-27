@@ -7,8 +7,8 @@ Item {
     property int value: 0
     property real trackWidth: 28
     property real trackHeight: 4
-    property color fillColor: Colors.color5
-    property color trackColor: Qt.rgba(1, 1, 1, 0.15)
+    property color fillColor: Colors.color6
+    property color trackColor: Colors.color1
 
     width: trackWidth
     height: trackHeight

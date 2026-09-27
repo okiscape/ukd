@@ -5,21 +5,37 @@ import qs.modules
 Rectangle {
     id: root
 
-    property real collapsedWidth: 205
-    property real expandedWidth: 600
     property var currentDate: new Date()
     property string mediaArtist: ""
     property string mediaTitle: ""
     property string mediaStatus: "Stopped"
     property bool hasPlayer: false
-    property real mediaPosition: 0   // seconds
-    property real mediaDuration: 0   // seconds
+    property real mediaPosition: 0
+    property real mediaDuration: 0
 
-    readonly property real baseWidth: timeText.implicitWidth + dateText.implicitWidth + 50
-    readonly property real trackTextWidth: trackText.implicitWidth + positionText.implicitWidth
-    readonly property real mediaWidth: root.hasPlayer ? (baseWidth + trackTextWidth + 8) : 0
+    property real expandedWidth: leftRow.implicitWidth
+    property real collapsedWidth: calcWidth([
+        timeText,
+        dateText,
+        hasPlayer?playerMeta:null,
+        hasPlayer?playerPos:null
+    ])
 
-    width: hoverHandler.hovered ? (root.hasPlayer ? Math.max(mediaWidth, expandedWidth) : expandedWidth) : (root.hasPlayer ? Math.max(mediaWidth, collapsedWidth) : collapsedWidth)
+    width: hoverHandler.hovered ? expandedWidth : collapsedWidth
+
+
+    function calcWidth(items) {
+        let visibleItems = items.filter(item => item && item.visible);
+        if (visibleItems.length === 0) return 0;
+
+        let sumWidth = visibleItems.reduce((acc, item) => acc + item.implicitWidth, 0);
+        let gaps = visibleItems.length - 1;
+        let totalSpacing = gaps * leftRow.spacing;
+        let totalPadding = leftRow.padding * 2;
+
+        return sumWidth + totalSpacing + totalPadding;
+    }
+
 
     Behavior on width {
         NumberAnimation {
@@ -158,6 +174,7 @@ Rectangle {
     }
 
     Row {
+        id: leftRow
         anchors.fill: parent
         padding: 10
         spacing: 12
@@ -183,6 +200,7 @@ Rectangle {
         }
 
         Column {
+            id: playerPos
             anchors.verticalCenter: parent.verticalCenter
             visible: root.hasPlayer
 
@@ -209,7 +227,7 @@ Rectangle {
 
         Text {
             anchors.verticalCenter: parent.verticalCenter
-            id: trackText
+            id: playerMeta
             text: root.hasPlayer ? formatTrackInfo(root.mediaArtist, root.mediaTitle) : ""
             font.pixelSize: 13
             font.family: "Monospace"

@@ -15,12 +15,7 @@ Rectangle {
     property int volumePct: 0
     property int brightnessPct: 0
 
-    // Полная ширина автоматически считывается с родительского Row
     property real expandedWidth: rightRow.implicitWidth
-
-    // Расчет ширины для свернутого состояния
-    // Если VOL и BRT должны быть видны ВСЕГДА — оставьте их в массиве.
-    // Если они должны появляться ТОЛЬКО при наведении — удалите volumeMetric и brightnessMetric из массива ниже.
     property real collapsedWidth: calcWidth([
         cpuMetric,
         ramMetric,
