@@ -37,6 +37,7 @@
       "input"
       "wireshark"
       "wallpapers"
+      "docker"
     ];
     shell = pkgs.bash;
     packages = with pkgs; [

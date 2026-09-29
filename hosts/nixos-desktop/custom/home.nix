@@ -10,6 +10,7 @@ let
     fastfetch = ./configs/fastfetch.nix;
     quickshell = ./configs/quickshell.nix;
     hellwal = ./configs/hellwal.nix;
+    cava = ./configs/cava.nix;
   };
   enabledModules = ukdignore.filterModules programModules;
 in

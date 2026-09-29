@@ -7,7 +7,7 @@ let
     pipewire = ./configs/pipewire.nix;
     konawalls = ./configs/konawalls.system.nix;
     obs-studio = ./configs/obs-studio.nix;
-    cava = ./configs/cava.nix;
+    docker = ./configs/docker.nix;
     # lightdm = ./configs/lightdm.nix;
   };
   enabledModules = ukdignore.filterModules programModules;
