@@ -34,7 +34,7 @@ in
 
     # wm
     inputs.driftwm.packages.${pkgs.stdenv.hostPlatform.system}.default
-    pkgs.uwsm pkgs.lightdm pkgs.slurp
+    pkgs.uwsm pkgs.brightnessctl
 
     # ui, wallpapers
     pkgs.quickshell pkgs.awww pkgs.hellwal pkgs.cava

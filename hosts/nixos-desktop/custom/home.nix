@@ -31,7 +31,7 @@ in
     pkgs.neovim pkgs.zed-editor pkgs.wakatime-cli  pkgs.opencode
     pkgs.vscodium pkgs.rustc pkgs.rustup pkgs.go pkgs.docker
     pkgs.pnpm pkgs.ollama pkgs.python3 pkgs.protobuf pkgs.cmake
-    pkgs.docker-compose pkgs.jq pkgs.android-tools
+    pkgs.docker-compose pkgs.jq pkgs.android-tools pkgs.ruff
 
     # reverse
     pkgs.nmap pkgs.lsplug pkgs.minicom pkgs.openocd pkgs.flashrom
