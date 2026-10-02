@@ -8,6 +8,7 @@ let
     konawalls = ./configs/konawalls.system.nix;
     obs-studio = ./configs/obs-studio.nix;
     docker = ./configs/docker.nix;
+    wakatime = ./configs/wakatime.nix;
     # lightdm = ./configs/lightdm.nix;
   };
   enabledModules = ukdignore.filterModules programModules;

@@ -11,6 +11,7 @@ let
     quickshell = ./configs/quickshell.nix;
     hellwal = ./configs/hellwal.nix;
     cava = ./configs/cava.nix;
+    wakatime = ./confing/wakatime.nix;
   };
   enabledModules = ukdignore.filterModules programModules;
 in
