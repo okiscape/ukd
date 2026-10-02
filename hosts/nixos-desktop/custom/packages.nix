@@ -38,7 +38,7 @@ in
     pkgs.uwsm pkgs.brightnessctl
 
     # ui, wallpapers
-    pkgs.quickshell pkgs.awww pkgs.hellwal pkgs.cava
+    pkgs.quickshell pkgs.awww pkgs.hellwal pkgs.cava pkgs.qt6.qtdeclarative
 
     # wo/ ui utils
     pkgs.wl-clipboard pkgs.cliphist
