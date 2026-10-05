@@ -9,6 +9,7 @@ let
     obs-studio = ./configs/obs-studio.nix;
     docker = ./configs/docker.nix;
     wakatime = ./configs/wakatime.nix;
+    xwayland-sattelite = ./configs/xwayland.nix;
     # lightdm = ./configs/lightdm.nix;
   };
   enabledModules = ukdignore.filterModules programModules;
@@ -32,6 +33,7 @@ in
     pkgs.btrfs-progs pkgs.efibootmgr pkgs.refind
     pkgs.os-prober pkgs.pipewire pkgs.playerctl
     pkgs.xdg-desktop-portal pkgs.xdg-desktop-portal-wlr
+    pkgs.xwayland-satellite
 
     # wm
     inputs.driftwm.packages.${pkgs.stdenv.hostPlatform.system}.default
