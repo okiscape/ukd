@@ -10,7 +10,7 @@ let
     docker = ./configs/docker.nix;
     wakatime = ./configs/wakatime.nix;
     xwayland-sattelite = ./configs/xwayland.nix;
-    bluetooth = ./configs/bluetooch.nix;
+    bluetooth = ./configs/bluetooth.nix;
     # lightdm = ./configs/lightdm.nix;
   };
   enabledModules = ukdignore.filterModules programModules;
