@@ -1,4 +1,19 @@
-{pkgs, inputs, ...}:
+{pkgs, inputs, lib, ...}:
+let
+  ukdignore = import ../lib/ukdignore.nix {inherit lib;};
+  programModules = {
+    konawalls = ./configs/konawalls.nix;
+    driftwm = ./configs/driftwm.nix;
+    kitty = ./configs/kitty.nix;
+    starship = ./configs/starship.nix;
+    fish = ./configs/fish.nix;
+    fastfetch = ./configs/fastfetch.nix;
+    quickshell = ./configs/quickshell.nix;
+    hellwal = ./configs/hellwal.nix;
+    cava = ./configs/cava.nix;
+  };
+  enabledModules = ukdignore.filterModules programModules;
+in
 {
   home.username = "okiscape";
   home.homeDirectory = "/home/okiscape";
@@ -16,7 +31,7 @@
     pkgs.neovim pkgs.zed-editor pkgs.wakatime-cli  pkgs.opencode
     pkgs.vscodium pkgs.rustc pkgs.rustup pkgs.go pkgs.docker
     pkgs.pnpm pkgs.ollama pkgs.python3 pkgs.protobuf pkgs.cmake
-    pkgs.docker-compose pkgs.jq pkgs.android-tools
+    pkgs.docker-compose pkgs.jq pkgs.android-tools pkgs.ruff
 
     # reverse
     pkgs.nmap pkgs.lsplug pkgs.minicom pkgs.openocd pkgs.flashrom
@@ -42,14 +57,7 @@
     inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default pkgs.lightdm
   ];
 
-  imports = [
-    inputs.konawalls.homeManagerModules.default
-
-    ./configs/driftwm.nix
-    ./configs/kitty.nix
-    ./configs/starship.nix
-    ./configs/fish.nix
-    ./configs/fastfetch.nix
-    ./configs/konawalls.nix
-  ];
+  imports = map
+    (name: enabledModules.${name})
+    (builtins.attrNames enabledModules);
 }

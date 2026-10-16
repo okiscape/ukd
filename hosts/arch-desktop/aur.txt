@@ -1,7 +1,8 @@
-driftwm-git
+driftwm
 uwsm
 
 quickshell
+hellwal
 awww
 
 osu-lazer-bin

@@ -3,3 +3,4 @@ hardware-configuration.nix
 .*
 !.gitignore
 !.github
+!/.ukdignore

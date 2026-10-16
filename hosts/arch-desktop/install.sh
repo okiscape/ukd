@@ -8,7 +8,38 @@ REPO_DIR="$(cd "$CUR_DIR/../.." && pwd)"
 
 . "$REPO_DIR/scripts/lib/ask.sh"
 . "$REPO_DIR/scripts/lib/confirm.sh"
+. "$REPO_DIR/scripts/lib/ignore.sh"
 . "$REPO_DIR/scripts/lib/link.sh"
+
+ukd_ignore_load "$REPO_DIR/.ukdignore" || exit 1
+
+install_system_config() {
+    echo " --- installing system configuration..."
+
+    if ! ukd_is_ignored "konawalls" && [ -f "$CUR_DIR/system/konawalls.conf" ]; then
+        TARGET_USER="${SUDO_USER:-${USER:-}}"
+
+        if getent group wallpapers >/dev/null 2>&1; then
+            echo "  > wallpapers group already exists"
+        else
+            sudo groupadd -f wallpapers
+            echo "  > wallpapers group created"
+        fi
+
+        if [ -z "$TARGET_USER" ] || [ "$TARGET_USER" = "root" ]; then
+            echo " ! cannot detect desktop user, add it manually: sudo usermod -aG wallpapers <user>"
+        elif id -nG "$TARGET_USER" | tr ' ' '\n' | grep -qx "wallpapers"; then
+            echo "  > user $TARGET_USER is already in wallpapers group"
+        else
+            sudo usermod -aG wallpapers "$TARGET_USER"
+            echo "  > user $TARGET_USER added to wallpapers group (relogin to apply)"
+        fi
+
+        sudo install -Dm644 "$CUR_DIR/system/konawalls.conf" /etc/tmpfiles.d/ukd-konawalls.conf
+        sudo systemd-tmpfiles --create /etc/tmpfiles.d/ukd-konawalls.conf
+        echo "  > wallpapers tmpfiles rules applied"
+    fi
+}
 
 install_repo_packages() {
     echo " --- installing pacman packages..."
@@ -43,42 +74,65 @@ install_configs() {
     mkdir -p "$CONFIG_DIR"
 
     # driftwm
-    if [ -f "$REPO_DIR/common/driftwm.toml" ]; then
-        mkdir -p "$CONFIG_DIR/driftwm"
-        link_config "$REPO_DIR/common/driftwm.toml" "$CONFIG_DIR/driftwm/config.toml"
+    if ! ukd_is_ignored "driftwm" && [ -f "$REPO_DIR/common/driftwm.toml" ]; then
+        link_config "$REPO_DIR/common/driftwm.toml" "$CONFIG_DIR/driftwm/config.toml" "$CONFIG_DIR/driftwm"
         echo "  > driftwm config linked"
     fi
 
     # kitty
-    if [ -f "$REPO_DIR/hosts/${DISTRO_HOST:-arch-desktop}/kitty.conf" ] || [ -f "$CUR_DIR/kitty.conf" ]; then
-        mkdir -p "$CONFIG_DIR/kitty"
-        link_config "$CUR_DIR/kitty.conf" "$CONFIG_DIR/kitty/kitty.conf"
+    if ! ukd_is_ignored "kitty" && [ -f "$REPO_DIR/common/kitty.conf" ]; then
+        link_config "$REPO_DIR/common/kitty.conf" "$CONFIG_DIR/kitty/kitty.conf" "$CONFIG_DIR/kitty"
         echo "  > kitty config linked"
     fi
 
+    # quickshell
+    if ! ukd_is_ignored "quickshell" && [ -d "$REPO_DIR/common/quickshell" ]; then
+        link_dir "$REPO_DIR/common/quickshell" "$CONFIG_DIR/quickshell"
+        echo "  > quickshell config linked"
+    fi
+
+    # konawalls
+    if ! ukd_is_ignored "konawalls" && [ -f "$REPO_DIR/common/konawalls.json" ]; then
+        link_config "$REPO_DIR/common/konawalls.json" "$CONFIG_DIR/konawalls/config.json" "$CONFIG_DIR/konawalls"
+        echo "  > konawalls config linked"
+    fi
+
+    # hellwal
+    if ! ukd_is_ignored "hellwal" && [ -d "$REPO_DIR/common/hellwal" ]; then
+        link_dir "$REPO_DIR/common/hellwal" "$CONFIG_DIR/hellwal/templates"
+        echo "  > hellwal config linked"
+    fi
+
+    # cava
+    if ! ukd_is_ignored "cava"; then
+        mkdir -p "$CONFIG_DIR/cava"
+        ln -sf "$HOME/.cache/hellwal/cava" "$CONFIG_DIR/cava/config"
+        echo "  > cava config linked"
+    fi
+
     # fish
-    if [ -f "$REPO_DIR/common/fish_init.sh" ]; then
+    if ! ukd_is_ignored "fish" && [ -f "$REPO_DIR/common/fish_init.sh" ]; then
         mkdir -p "$CONFIG_DIR/fish"
         grep -q "fish_init" "$CONFIG_DIR/fish/config.fish" 2>/dev/null || \
             echo "source '$REPO_DIR/common/fish_init.sh'" >> "$CONFIG_DIR/fish/config.fish"
+        link_dir "$REPO_DIR/common/fish_functions" "$CONFIG_DIR/fish/functions"
         echo "  > fish config linked"
     fi
 
     # starship
-    if [ -f "$REPO_DIR/hosts/${DISTRO_HOST:-arch-desktop}/starship.toml" ] || [ -f "$CUR_DIR/starship.toml" ]; then
-        link_config "$CUR_DIR/starship.toml" "$CONFIG_DIR/starship.toml"
+    if ! ukd_is_ignored "starship" && [ -f "$REPO_DIR/common/starship.toml" ]; then
+        link_config "$REPO_DIR/common/starship.toml" "$CONFIG_DIR/starship.toml"
         echo "  > starship config linked"
     fi
 
     # fastfetch
-    if [ -f "$REPO_DIR/common/fastfetch-logo.png" ]; then
-        mkdir -p "$CONFIG_DIR/fastfetch"
-        link_config "$REPO_DIR/common/fastfetch-logo.png" "$CONFIG_DIR/fastfetch/logo.png"
-        echo "  > fastfetch logo linked"
+    if ! ukd_is_ignored "fastfetch" && [ -d "$REPO_DIR/common/fastfetch" ]; then
+        link_dir "$REPO_DIR/common/fastfetch" "$CONFIG_DIR/fastfetch"
+        echo "  > fastfetch configs linked"
     fi
 
     # grub theme
-    if [ -d "$REPO_DIR/common/grub-theme" ] && confirm " ? install grub theme?"; then
+    if ! ukd_is_ignored "grub" && [ -d "$REPO_DIR/common/grub-theme" ] && confirm " ? install grub theme?"; then
         sudo cp -r "$REPO_DIR/common/grub-theme" /boot/grub/themes/ukd
         if command -v grub-mkconfig >/dev/null 2>&1; then
             sudo sed -i 's|^#GRUB_THEME=.*|GRUB_THEME="/boot/grub/themes/ukd/theme.txt"|' /etc/default/grub
@@ -91,6 +145,7 @@ install_configs() {
 install_repo_packages
 install_aur_packages
 install_configs
+install_system_config
 
 echo ""
 echo " ^ arch-desktop install.sh done"

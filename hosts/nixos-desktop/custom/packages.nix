@@ -1,13 +1,24 @@
-{pkgs, inputs, ...}:
-
+{pkgs, inputs, lib, ...}:
+let
+  ukdignore = import ../lib/ukdignore.nix {inherit lib;};
+  programModules = {
+    throne = ./configs/throne.nix;
+    wireshark = ./configs/wireshark.nix;
+    pipewire = ./configs/pipewire.nix;
+    konawalls = ./configs/konawalls.system.nix;
+    obs-studio = ./configs/obs-studio.nix;
+    docker = ./configs/docker.nix;
+    wakatime = ./configs/wakatime.nix;
+    xwayland-sattelite = ./configs/xwayland.nix;
+    bluetooth = ./configs/bluetooth.nix;
+    # lightdm = ./configs/lightdm.nix;
+  };
+  enabledModules = ukdignore.filterModules programModules;
+in
 {
-  imports = [
-    ./configs/throne.nix
-    ./configs/wireshark.nix
-    ./configs/pipewire.nix
-    ./configs/konawalls.sys.nix
-    # ./configs/lightdm.nix
-  ];
+  imports = map
+    (name: enabledModules.${name})
+    (builtins.attrNames enabledModules);
 
   nixpkgs.config.allowUnfree = true;
   programs.uwsm.enable = true;
@@ -22,13 +33,15 @@
     pkgs.flatpak pkgs.gnumake pkgs.musl pkgs.gcc
     pkgs.btrfs-progs pkgs.efibootmgr pkgs.refind
     pkgs.os-prober pkgs.pipewire pkgs.playerctl
+    pkgs.xdg-desktop-portal pkgs.xdg-desktop-portal-wlr
+    pkgs.xwayland-satellite
 
     # wm
     inputs.driftwm.packages.${pkgs.stdenv.hostPlatform.system}.default
-    pkgs.uwsm pkgs.lightdm pkgs.slurp
+    pkgs.uwsm pkgs.brightnessctl
 
     # ui, wallpapers
-    pkgs.quickshell pkgs.awww pkgs.hellwal
+    pkgs.quickshell pkgs.awww pkgs.hellwal pkgs.cava pkgs.qt6.qtdeclarative
 
     # wo/ ui utils
     pkgs.wl-clipboard pkgs.cliphist
