@@ -1,10 +1,6 @@
 # arch-desktop packages
 # one package per line, "#" starts a comment
 # installed with: sudo pacman -S --needed <packages>
-<<<<<<< HEAD
-# see aur.txt for AUR packages (installed with yay)
-=======
->>>>>>> origin/feat/quickshell
 
 # base
 git
@@ -49,7 +45,7 @@ neovim
 rustup
 go
 docker
-pnpm
+# pnpm
 python
 protobuf
 cmake
@@ -73,7 +69,7 @@ avahi
 arp-scan
 
 # data
-nicotine-plus
+# nicotine-plus
 qbittorrent
 filelight
 dolphin
@@ -88,7 +84,7 @@ duf
 
 # art
 kdenlive
-opentabletdriver
+# opentabletdriver
 krita
 ardour
 obs-studio

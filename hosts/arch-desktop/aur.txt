@@ -1,4 +1,4 @@
-driftwm
+# driftwm
 uwsm
 
 quickshell
@@ -7,7 +7,6 @@ awww
 
 osu-lazer-bin
 prismlauncher
-cavalier
 minesweep-rs
 kew
 steamcmd
@@ -21,5 +20,5 @@ vscodium-bin
 opencode
 ollama
 
-localsend
+localsend-bin
 otf-geist-mono-nerd

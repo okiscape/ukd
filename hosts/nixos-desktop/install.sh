@@ -47,11 +47,8 @@ case "$BOOTLOADER" in
       useOSProber = ${GRUB_PROBER};
 
       theme = ../../common/grub-theme;
-<<<<<<< HEAD
-=======
 
       splashImage = null;
->>>>>>> origin/feat/quickshell
     };
 
     efi.canTouchEfiVariables = true;
